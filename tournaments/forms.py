@@ -19,3 +19,17 @@ class ScoreForm(forms.ModelForm):
     class Meta:
         model = Score
         fields = ["player", "tournament", "strokes"]
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        
+        self.fields["player"].queryset = Player.objects.all()
+        tournament_id = self.data.get("tournament")
+        
+        if tournament_id:
+            try:
+                tournament = Tournament.objects.get(id=tournament_id)
+                self.fields["player"].queryset = tournament.players.all()
+            except (Tournament.DoesNotExist, ValueError):
+                pass
