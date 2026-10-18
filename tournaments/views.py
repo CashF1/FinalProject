@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Player
-from .forms import PlayerForm
+from .models import Player, Tournament
+from .forms import PlayerForm, TournamentForm
 
 def home(request):
     return render(request, "tournaments/home.html")
+
+#Player CRUD
 
 def player_list(request):
     players = Player.objects.all()
@@ -47,4 +49,50 @@ def player_delete(request, player_id):
     
     return render(request, "tournaments/player_confirm_delete.html", {
         "player": player
+    })
+    
+#Tournament CRUD
+
+def tournament_list(request):
+    tournaments = Tournament.objects.all()
+    return render(request, "tournaments/tournament_list.html", {"tournaments": tournaments})
+
+def tournament_create(request):
+    if request.method=="POST":
+        form = TournamentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("tournament_list")
+    else:
+        form = TournamentForm()
+        
+    return render(request, "tournaments/tournament_form.html", {
+        "form": form,
+        "title": "Create Tournament"
+    })
+        
+def tournament_edit(request, tournament_id):
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+    
+    if request.method == "POST":
+        form = TournamentForm(request.POST, instance=tournament)
+        if form.is_valid():
+            form.save()
+            return redirect("tournament_list")
+    else:
+        form = TournamentForm(instance=tournament)
+    return render(request, "tournaments/tournament_form.html", {
+        "form": form,
+        "title": "Edit Tournament"
+    })
+
+def tournament_delete(request, tournament_id):
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+    
+    if request.method == "POST":
+        tournament.delete()
+        return redirect("tournament_list")
+    
+    return render(request, "tournaments/tournament_confirm_delete.html", {
+        "tournament": tournament
     })

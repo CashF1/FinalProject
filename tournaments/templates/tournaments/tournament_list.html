@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tournaments</title>
+</head>
+<body>
+    <h1>Golf Tournaments</h1>
+
+    <a href="{% url 'tournament_create' %}">Create Tournament</a>
+
+    <ul>
+        {% for tournament in tournaments %}
+            <li>
+                <strong>{{ tournament.name }}</strong>
+                — {{ tournament.course }}
+                — {{ tournament.date }}
+                <br>
+                Players:
+                {% for player in tournament.players.all %}
+                    {{ player.first_name }} {{ player.last_name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No players selected
+                {% endfor %}
+                <br>
+                <a href="{% url 'tournament_edit' tournament.id %}">Edit</a>
+                <a href="{% url 'tournament_delete' tournament.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No tournaments have been created yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'home' %}">Home</a>
+</body>
+</html>
