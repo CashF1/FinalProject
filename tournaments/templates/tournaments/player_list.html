@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Players</title>
+</head>
+<body>
+    <h1>Golf Club Players</h1>
+
+    <a href="{% url 'player_create' %}">Add Player</a>
+
+    <ul>
+        {% for player in players %}
+            <li>
+                {{ player.first_name }} {{ player.last_name }}
+                {% if player.email %} - {{ player.email }}{% endif %}
+                <a href="{% url 'player_edit' player.id %}">Edit</a>
+                <a href="{% url 'player_delete' player.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No players have been added yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'home' %}">Home</a>
+</body>
+</html>
