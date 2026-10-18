@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Player, Tournament
-from .forms import PlayerForm, TournamentForm
+from .models import Player, Tournament, Score
+from .forms import PlayerForm, TournamentForm, ScoreForm
 
 def home(request):
     return render(request, "tournaments/home.html")
@@ -95,4 +95,25 @@ def tournament_delete(request, tournament_id):
     
     return render(request, "tournaments/tournament_confirm_delete.html", {
         "tournament": tournament
+    })
+    
+#Score CRUD
+
+def score_list(request):
+    scores = Score.objects.select_related("player", "tournament").order_by("strokes")
+    
+    return render(request, "tournaments/score_list.html", {"scores": scores})
+
+def score_create(request):
+    if request.method == "POST":
+        form = ScoreForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("score_list")
+    else:
+        form = ScoreForm()
+    
+    return render(request, "tournaments/score_form.html", {
+        "form": form,
+        "title": "Enter Golf Score"
     })

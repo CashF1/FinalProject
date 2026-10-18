@@ -20,7 +20,7 @@ class Tournament(models.Model):
 class Score(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-    strokes = models.PositiveIntegerField
+    strokes = models.PositiveIntegerField()
     
     def __str__(self):
         return f"{self.player} - {self.tournament}: {self.strokes}"

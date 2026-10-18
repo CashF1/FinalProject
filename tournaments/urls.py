@@ -11,4 +11,6 @@ urlpatterns = [
     path("tournaments/add/", views.tournament_create, name="tournament_create"),
     path("tournaments/<int:tournament_id>/edit/", views.tournament_edit, name="tournament_edit"),
     path("tournaments/<int:tournament_id>/delete/", views.tournament_delete, name="tournament_delete"),
+    path("scores/", views.score_list, name = "score_list"),
+    path("scores/add/", views.score_create, name="score_create"),
 ]

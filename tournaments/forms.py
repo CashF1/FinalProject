@@ -1,5 +1,5 @@
 from django import forms
-from .models import Player, Tournament
+from .models import Player, Tournament, Score
 
 class PlayerForm(forms.ModelForm):
     class Meta:
@@ -12,4 +12,10 @@ class TournamentForm(forms.ModelForm):
         fields = ["name", "course", "date", "players"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
+            "players": forms.CheckboxSelectMultiple(),
         }
+        
+class ScoreForm(forms.ModelForm):
+    class Meta:
+        model = Score
+        fields = ["player", "tournament", "strokes"]
