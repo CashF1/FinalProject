@@ -1,4 +1,5 @@
-
+{% load static %}
+<link rel="stylesheet" href="{% static 'tournaments/style.css' %}">    
 <h1>Golf Leaderboard</h1>
 
 <form method="get">
@@ -45,6 +46,8 @@
 {% else %}
     <p>No scores found for this tournament yet.</p>
 {% endif %}
+
+<p><a href="{% url 'score_create' %}">Add New Score</a></p>
 
 <p><a href="/">Back to Home</a></p>
 

@@ -105,16 +105,28 @@ def score_list(request):
     return render(request, "tournaments/score_list.html", {"scores": scores})
 
 def score_create(request):
-    tournament_id = request.GET.get("tournament")
+    if request.method == "POST":
+        form = ScoreForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("score_list")
+    else:
+        form = ScoreForm
     
-    tournaments = Tournament.objects.all()
-    scores = Score.objects.select_related("player","tournament").order_by("strokes")
+    return render(
+        request, "tournaments/score_form.html", {"form": form, "title": "Enter Golf Score"}
+    )
     
-    if tournament_id:
-        scores = scores.filter(tournament_id=tournament_id)
+    # tournament_id = request.GET.get("tournament")
+    
+    # tournaments = Tournament.objects.all()
+    # scores = Score.objects.select_related("player","tournament").order_by("strokes")
+    
+    # if tournament_id:
+    #     scores = scores.filter(tournament_id=tournament_id)
         
-    return render(request, "tournaments/score_list.html", {
-        "scores": scores,
-        "tournaments": tournaments,
-        "selected_tounament": tournament_id
-    })
+    # return render(request, "tournaments/score_form.html", {
+    #     "scores": scores,
+    #     "tournaments": tournaments,
+    #     "selected_tounament": tournament_id
+    # })
